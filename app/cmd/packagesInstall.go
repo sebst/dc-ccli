@@ -5,8 +5,9 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
+	"strings"
 
+	"devcontainer.com/ccli/internal/packageinstaller"
 	"github.com/spf13/cobra"
 )
 
@@ -22,8 +23,21 @@ var installCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("install called")
-		fmt.Println(args)
+		packages := []*packageinstaller.Package{}
+		for _, arg := range args {
+			packageParts := strings.Split(arg, "=")
+			packageName := packageParts[0]
+			if len(packageParts) == 1 {
+				packageParts = append(packageParts, "latest")
+			}
+			packages = append(packages, &packageinstaller.Package{
+				Name:    packageName,
+				Version: packageParts[1],
+			})
+
+		}
+		packageinstaller.InstallPackages(packages)
+
 	},
 }
 
