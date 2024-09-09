@@ -32,7 +32,7 @@ func DCInstall(packagename string) error {
 	}
 
 	// Create the run.sh file and write "echo hello"
-	content := "#!/usr/bin/env sh\n\nsudo VERSION=latest " + tempDir + "/install.sh \n"
+	content := "#!/usr/bin/env sh\n\ncd " + tempDir + "\nsudo VERSION=latest " + tempDir + "/install.sh \n"
 	contentAsBytes := []byte(content)
 	err = os.WriteFile(runPath, contentAsBytes, 0777)
 	if err != nil {
@@ -56,6 +56,12 @@ func DCInstall(packagename string) error {
 	}
 
 	fmt.Println(string(stdout))
+
+	// Remove the temporary directory
+	err = os.RemoveAll(tempDir)
+	if err != nil {
+		return fmt.Errorf("failed to remove temp dir: %v", err)
+	}
 
 	return nil
 }
