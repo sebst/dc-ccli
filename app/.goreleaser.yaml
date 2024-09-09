@@ -23,8 +23,6 @@ builds:
     goarch:
       - amd64
       - arm64
-    ldflags:
-      - "-X versioninfo.Version={{.Version}}"
 
 archives:
   - format: tar.gz

@@ -11,8 +11,6 @@ var (
 	date    = "unknown"
 )
 
-var VersionString = version
-
 func main() {
 	cmd.Execute()
 }
