@@ -24,7 +24,7 @@ builds:
       - amd64
       - arm64
     ldflags:
-      - "-X version.Version=$(git describe --tags)"
+      - "-X version.Version={{.Version}}"
 
 archives:
   - format: tar.gz
