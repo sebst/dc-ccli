@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	"devcontainer.com/ccli/internal/version"
+	versioninfo "devcontainer.com/ccli/internal/versionInfo"
 	"github.com/spf13/cobra"
 )
 
@@ -16,9 +16,11 @@ var versionCmd = &cobra.Command{
 	Short: "Version of the devcontainer.com cCLI",
 	Long:  `Version of the devcontainer.com cCLI`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("version called")
-		version := version.GetVersion()
-		fmt.Println("devcontainer.com cCLI version:", version)
+		fmt.Println("TODO")
+		version_str := versioninfo.Version_version
+		fmt.Println("devcontainer.com cCLI version:", version_str)
+		// version_str := main.VersionString
+		// fmt.Println("devcontainer.com cCLI version:", version_str)
 	},
 }
 

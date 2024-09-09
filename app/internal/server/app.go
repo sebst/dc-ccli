@@ -38,16 +38,16 @@ func GetApp() *fiber.App {
 		return c.SendString("Hello, World!")
 	})
 
-	// app.Get("/api/processes", func(c *fiber.Ctx) error {
-	// 	// Get running processes
-	// 	processList, err := getRunningProcesses()
-	// 	if err != nil {
-	// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-	// 			"error": err.Error(),
-	// 		})
-	// 	}
-	// 	return c.JSON(processList)
-	// })
+	app.Get("/api/processes", func(c *fiber.Ctx) error {
+		// Get running processes
+		processList, err := getRunningProcesses()
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+		return c.JSON(processList)
+	})
 
 	// New route for streaming stdout of /bin/test.sh
 	app.Get("/api/test", func(c *fiber.Ctx) error {

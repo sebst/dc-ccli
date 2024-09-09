@@ -1,6 +1,7 @@
 import './App.css'
-import Packages from './components/Packages'
-// import TaskManager from './components/TaskManager'
+// import Packages from './components/Packages'
+import TaskManager from './components/TaskManager'
+
 
 function App() {
 
@@ -11,8 +12,8 @@ function App() {
       <div>
         Hello, App
 
-        {/* <TaskManager /> */}
-        <Packages />
+        <TaskManager />
+        {/* <Packages /> */}
       </div>
     </>
   )
