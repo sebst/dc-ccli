@@ -3,7 +3,9 @@ Copyright © 2024 devcontainer.com
 */
 package main
 
-import "devcontainer.com/ccli/cmd"
+import (
+	"devcontainer.com/ccli/cmd"
+)
 
 var (
 	version = "dev"
@@ -12,5 +14,6 @@ var (
 )
 
 func main() {
+	cmd.SetVersionInfo(version, commit, date)
 	cmd.Execute()
 }
