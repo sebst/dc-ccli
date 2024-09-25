@@ -49,12 +49,11 @@ func DCInstall(packagename string) error {
 
 	cmd := exec.Command("sh", runPath)
 	stdout, err := cmd.CombinedOutput()
-	fmt.Println(string(stdout))
+
 	if err != nil {
 		fmt.Println(err.Error())
 		return errors.New("command failed")
 	}
-
 	fmt.Println(string(stdout))
 
 	// Remove the temporary directory
