@@ -77,7 +77,9 @@ func InstallFromConfig(filePath string) error {
 		if err == nil {
 			cmd := exec.Command("bash", "/tmp/post-install.sh")
 			stdout, err := cmd.CombinedOutput()
+			fmt.Println(string(stdout))
 			if err != nil {
+				fmt.Println("Command failed:", command)
 				log.Fatalf("Error running command: %v", err)
 				return err
 			}
