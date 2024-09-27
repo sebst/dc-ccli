@@ -52,7 +52,7 @@ func InstallFromConfig(filePath string) error {
 		fmt.Printf("Package Name: %s, Version: %s\n", pkg.Name, pkg.Version)
 		_, err = out.WriteString(fmt.Sprintf("%s\t%s\n", pkg.Name, pkg.Version))
 
-		command += fmt.Sprintf(" %s=%s ", pkg.Name, pkg.Version)
+		command += fmt.Sprintf(" %s@%s ", pkg.Name, pkg.Version)
 
 		if err != nil {
 			log.Fatalf("Error writing to file: %v", err)
@@ -69,7 +69,7 @@ func InstallFromConfig(filePath string) error {
 
 	// Run Post-Install scripts
 	for _, pkg := range pkgList.Packages {
-		url := fmt.Sprintf("https://raw.githubusercontent.com/sebst/brewkit-test/refs/heads/main/post-installl/%s/build.sh", pkg.Name)
+		url := fmt.Sprintf("https://raw.githubusercontent.com/sebst/brewkit-test/refs/heads/main/post-install/%s/build.sh", pkg.Name)
 		err = downloadFile(url, "/tmp/post-install.sh")
 		if err == nil {
 			cmd := exec.Command("bash", "/tmp/post-install.sh")
