@@ -59,6 +59,7 @@ func InstallFromConfig(filePath string) error {
 		}
 	}
 
+	fmt.Println("--- Running Installation Command ---")
 	cmd := exec.Command("bash", "-c", command)
 	stdout, err := cmd.CombinedOutput()
 	fmt.Println(string(stdout))
@@ -68,6 +69,7 @@ func InstallFromConfig(filePath string) error {
 		return err
 	}
 
+	fmt.Println("--- Running Post-Installation Command ---")
 	// Run Post-Install scripts
 	for _, pkg := range pkgList.Packages {
 		url := fmt.Sprintf("https://raw.githubusercontent.com/sebst/brewkit-test/refs/heads/main/post-install/%s/build.sh", pkg.Name)
