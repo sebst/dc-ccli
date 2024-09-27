@@ -61,11 +61,12 @@ func InstallFromConfig(filePath string) error {
 
 	cmd := exec.Command("bash", "-c", command)
 	stdout, err := cmd.CombinedOutput()
+	fmt.Println(string(stdout))
 	if err != nil {
+		fmt.Println("Command failed:", command)
 		log.Fatalf("Error running command: %v", err)
 		return err
 	}
-	fmt.Println(string(stdout))
 
 	// Run Post-Install scripts
 	for _, pkg := range pkgList.Packages {
