@@ -93,3 +93,9 @@ func GetApp() *fiber.App {
 	// Start the server on port 3000
 	// app.Listen(":3001")
 }
+
+func RunApp(port int) {
+	app := GetApp()
+	listenArg := fmt.Sprintf(":%d", port)
+	app.Listen(listenArg)
+}

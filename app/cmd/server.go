@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 
+	"devcontainer.com/ccli/internal/server"
 	"github.com/spf13/cobra"
 )
 
@@ -16,6 +17,7 @@ var serverCmd = &cobra.Command{
 	Long:  `The server component provides a REST API and a dashboard for your devcontainer.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("server called")
+		server.RunApp(6867)
 	},
 }
 
