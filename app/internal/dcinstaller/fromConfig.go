@@ -89,9 +89,9 @@ func InstallFromConfig(filePath string) error {
 
 	fmt.Println("--- Running General Config Command ---")
 	url := "https://raw.githubusercontent.com/sebst/brewkit-test/refs/heads/main/post-install/post-install-global.sh"
-	err = downloadFile(url, "/tmp/post-install.sh")
+	err = downloadFile(url, "/tmp/post-install-2.sh")
 	if err == nil {
-		cmd := exec.Command("bash", "/tmp/post-install.sh")
+		cmd := exec.Command("bash", "/tmp/post-install-2.sh")
 		stdout, err := cmd.CombinedOutput()
 		fmt.Println(string(stdout))
 		if err != nil {
