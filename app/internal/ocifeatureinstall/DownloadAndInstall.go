@@ -9,6 +9,7 @@ package ocifeatureinstall
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -42,8 +43,10 @@ func untar(filename string) error {
 }
 
 func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
+	tmpDirName := filepath.Join("/tmp", fmt.Sprintf("oras_extract_%d", rand.Int()))
+
 	// 0. Create a file store
-	fs, err := file.New("/tmp/oras/")
+	fs, err := file.New(tmpDirName)
 	if err != nil {
 		panic(err)
 	}
@@ -81,10 +84,10 @@ func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
 
 	manifestDescriptor, err := oras.Copy(ctx, repo, tag, fs, tag, oras.DefaultCopyOptions)
 	if err != nil {
-		panic(err)
+		fmt.Println(manifestDescriptor)
+		return "", fmt.Errorf("failed to copy from remote repository: %w", err)
 	}
 
-	tmpDirName := "/tmp/oras/"
 	// iterrate over the files in the directory
 	files, err := os.ReadDir(tmpDirName)
 	if err != nil {
@@ -98,12 +101,14 @@ func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
 			// check if fileName ends with ".tgz"
 			if fileName[len(fileName)-4:] == ".tgz" {
 				fmt.Println("found devcontainer feature")
-				err := untar(tmpDirName + fileName)
-				fmt.Println("Err", err)
+				err := untar(tmpDirName + "/" + fileName)
+				if err != nil {
+					return "", fmt.Errorf("failed to untar file: %w", err)
+				}
 			}
 		}
 	}
 
-	return manifestDescriptor.Digest.String(), nil
+	return tmpDirName, nil
 
 }
