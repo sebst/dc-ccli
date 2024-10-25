@@ -1,0 +1,23 @@
+[
+    {
+        "name": "ps1",
+        "run": "../examples/ps1.sh",
+        "prefix": "[ps1]",
+        "type": "longrun",
+        "dependsOn": []
+    },
+    {
+        "name": "ps2",
+        "run": "../examples/ps2.sh",
+        "prefix": "[ps2]",
+        "dependsOn": ["ps1"],
+        "type": "longrun"
+    },
+    {
+        "name": "ps3",
+        "run": "../example/ps1.sh",
+        "prefix": "[ps3]",
+        "dependsOn": ["ps1"],
+        "type": "longrun"
+    }
+]
