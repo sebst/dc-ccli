@@ -5,11 +5,11 @@ Copyright © 2024 devcontainer.com
 package ocifeatureinstall
 
 import (
-	"archive/tar"
 	"context"
 	"fmt"
-	"io"
 	"os"
+	"os/exec"
+	"path/filepath"
 
 	oras "oras.land/oras-go/v2"
 	"oras.land/oras-go/v2/content/file"
@@ -17,43 +17,22 @@ import (
 	"oras.land/oras-go/v2/registry/remote"
 )
 
-func untar(fileName string) {
-	// Open the tar file for reading.
-	file, err := os.Open(fileName)
+func untar(filename string) error {
+	// Open the tar or tgz file
+	fileDirectory := filepath.Dir(filename)
+	relativePath := filepath.Base(filename)
+
+	// in working directory `fileDirectory`, run command `tar -xvf relativePath`
+	cmd := exec.Command("tar", "-xf", relativePath)
+	cmd.Dir = fileDirectory
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
 	if err != nil {
-		fmt.Println(err)
-		return
+		return fmt.Errorf("failed to untar file: %w", err)
 	}
-	defer file.Close()
-	// untar
-	// Create a new tar reader.
-	reader := tar.NewReader(file)
-	// Iterate through the files in the archive.
-	for {
-		header, err := reader.Next()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// Print the name of the file.
-		fmt.Println(header.Name)
-		// Create a new file.
-		newFile, err := os.Create(header.Name)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer newFile.Close()
-		// Copy the file contents.
-		_, err = io.Copy(newFile, reader)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	}
+
+	return nil
 }
 
 func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
@@ -113,7 +92,8 @@ func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
 			// check if fileName ends with ".tgz"
 			if fileName[len(fileName)-4:] == ".tgz" {
 				fmt.Println("found devcontainer feature")
-				untar(tmpDirName + fileName)
+				err := untar(tmpDirName + fileName)
+				fmt.Println("Err", err)
 			}
 		}
 	}
