@@ -107,22 +107,68 @@ func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
 					return "", fmt.Errorf("failed to untar file: %w", err)
 				}
 
-				tt, err := parseDevcontainerFeatureJSONFile(tmpDirName + "/devcontainer-feature.json")
-				if err != nil {
-					return "", fmt.Errorf("failed to parse devcontainer feature json file: %w", err)
-				}
-				// fmt.Println(tt.Options)
-				getDefaultOptions(tt.Options)
+				return tmpDirName, nil
+				// tt, err := parseDevcontainerFeatureJSONFile(tmpDirName + "/devcontainer-feature.json")
+				// if err != nil {
+				// 	return "", fmt.Errorf("failed to parse devcontainer feature json file: %w", err)
+				// }
+				// // fmt.Println(tt.Options)
+				// getDefaultOptions(tt.Options)
 
 			}
 		}
 	}
 
-	return tmpDirName, nil
+	// return tmpDirName, nil
+	return "", fmt.Errorf("artifact is not a valid devcontainer feature")
 
 }
 
+func install(dirName string, options map[string]string) error {
+	installSh := filepath.Join(dirName, "install.sh")
+	if _, err := os.Stat(installSh); os.IsNotExist(err) {
+		return fmt.Errorf("install.sh not found in directory: %s", dirName)
+	}
+	fmt.Println("Running install.sh")
+	cmd := exec.Command(installSh)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Dir = dirName
+
+	var envs []string
+	for key, value := range options {
+		envs = append(envs, fmt.Sprintf("%s=\"%s\"", key, value))
+	}
+	cmd.Env = append(os.Environ(), envs...)
+
+	err := cmd.Run()
+
+	if err != nil {
+		return fmt.Errorf("failed to run install.sh: %w", err)
+	}
+
+	return nil
+}
+
+func DownloadAndInstallOCIArtifact(artifact string) error {
+	tmpDirName, err := DownloadAndExtractOCIArtifact(artifact)
+	if err != nil {
+		return fmt.Errorf("failed to download and extract OCI artifact: %w", err)
+	}
+	devcontainerManifest, err := parseDevcontainerFeatureJSONFile(tmpDirName + "/devcontainer-feature.json")
+	if err != nil {
+		return fmt.Errorf("failed to parse devcontainer feature json file: %w", err)
+	}
+	defaultOptions := getDefaultOptions(devcontainerManifest.Options)
+	fmt.Println("setting default options", defaultOptions)
+	install(tmpDirName, defaultOptions)
+	fmt.Println("installing")
+	return nil
+}
+
 func getValueFromEnvOrArgument(key string, arguments []string) string {
+	// TODO: implement this function
+	// TODO: Actually use this function
 	osEnv := os.Getenv(key)
 	if osEnv != "" {
 		return osEnv

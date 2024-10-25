@@ -23,12 +23,12 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("ocifeatureinstall called")
 
-		dir, err := ocifeatureinstall.DownloadAndExtractOCIArtifact("ghcr.io/sebst/devcontainer-features/desktop-xserver:0")
+		err := ocifeatureinstall.DownloadAndInstallOCIArtifact("ghcr.io/sebst/devcontainer-features/debug-dump-env:1")
 		if err != nil {
 			fmt.Printf("Failed to download and extract OCI artifact: %v\n", err)
 			return
 		}
-		fmt.Println(dir)
+		// fmt.Println(dir)
 	},
 }
 
