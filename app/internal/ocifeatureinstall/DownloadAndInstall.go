@@ -2,6 +2,8 @@
 Copyright © 2024 devcontainer.com
 */
 
+// see: https://pkg.go.dev/oras.land/oras-go/v2#example-package-PullFilesFromRemoteRepository
+
 package ocifeatureinstall
 
 import (
@@ -18,6 +20,10 @@ import (
 )
 
 func untar(filename string) error {
+	// Even though the file extension is `tgz`, the devcontainer feature is actually a tar file
+	// using the standard tar format in go, it fails to extract the file
+	// so we use the `tar` command to extract the file which seem to work
+
 	// Open the tar or tgz file
 	fileDirectory := filepath.Dir(filename)
 	relativePath := filepath.Base(filename)
