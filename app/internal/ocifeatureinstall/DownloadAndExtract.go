@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	oras "oras.land/oras-go/v2"
 	"oras.land/oras-go/v2/content/file"
@@ -105,10 +106,42 @@ func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
 				if err != nil {
 					return "", fmt.Errorf("failed to untar file: %w", err)
 				}
+
+				tt, err := parseDevcontainerFeatureJSONFile(tmpDirName + "/devcontainer-feature.json")
+				if err != nil {
+					return "", fmt.Errorf("failed to parse devcontainer feature json file: %w", err)
+				}
+				// fmt.Println(tt.Options)
+				getDefaultOptions(tt.Options)
+
 			}
 		}
 	}
 
 	return tmpDirName, nil
 
+}
+
+func getValueFromEnvOrArgument(key string, arguments []string) string {
+	osEnv := os.Getenv(key)
+	if osEnv != "" {
+		return osEnv
+	}
+	return ""
+}
+
+func getDefaultOptions(options map[string]FeatureOption) map[string]string {
+
+	var variables = make(map[string]string)
+
+	for key, option := range options {
+		keyUppercase := strings.ToUpper(key)
+		variables[keyUppercase] = option.Default.(string)
+	}
+
+	return variables
+
+	// for _, option := range options {
+	// 	fmt.Println(option)
+	// }
 }
