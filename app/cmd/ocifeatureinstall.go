@@ -21,9 +21,13 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("ocifeatureinstall called")
+		if len(args) != 1 {
+			fmt.Println("Usage: ccli ocifeatureinstall <ociFeature>")
+			return
+		}
+		ociFeature := args[0]
 
-		err := ocifeatureinstall.DownloadAndInstallOCIArtifact("ghcr.io/sebst/devcontainer-features/debug-dump-env:1")
+		err := ocifeatureinstall.DownloadAndInstallOCIArtifact(ociFeature)
 		if err != nil {
 			fmt.Printf("Failed to download and extract OCI artifact: %v\n", err)
 			return

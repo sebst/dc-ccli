@@ -95,13 +95,13 @@ func DownloadAndExtractOCIArtifact(artifact string) (string, error) {
 		return "", fmt.Errorf("failed to read directory: %w", err)
 	}
 	for _, file := range files {
-		fmt.Println(file.Name())
+		// fmt.Println(file.Name())
 		fileName := file.Name()
 		// check if fileName starts with "devcontainer-feature-"
 		if fileName[:21] == "devcontainer-feature-" {
 			// check if fileName ends with ".tgz"
 			if fileName[len(fileName)-4:] == ".tgz" {
-				fmt.Println("found devcontainer feature")
+				// fmt.Println("found devcontainer feature")
 				err := untar(tmpDirName + "/" + fileName)
 				if err != nil {
 					return "", fmt.Errorf("failed to untar file: %w", err)
@@ -129,7 +129,7 @@ func install(dirName string, options map[string]string) error {
 	if _, err := os.Stat(installSh); os.IsNotExist(err) {
 		return fmt.Errorf("install.sh not found in directory: %s", dirName)
 	}
-	fmt.Println("Running install.sh")
+	// fmt.Println("Running install.sh")
 	cmd := exec.Command(installSh)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -160,9 +160,9 @@ func DownloadAndInstallOCIArtifact(artifact string) error {
 		return fmt.Errorf("failed to parse devcontainer feature json file: %w", err)
 	}
 	defaultOptions := getDefaultOptions(devcontainerManifest.Options)
-	fmt.Println("setting default options", defaultOptions)
+	// fmt.Println("setting default options", defaultOptions)
 	install(tmpDirName, defaultOptions)
-	fmt.Println("installing")
+	// fmt.Println("installing")
 	return nil
 }
 
