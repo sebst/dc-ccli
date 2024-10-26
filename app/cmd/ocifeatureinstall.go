@@ -12,14 +12,11 @@ import (
 
 // ocifeatureinstallCmd represents the ocifeatureinstall command
 var ocifeatureinstallCmd = &cobra.Command{
-	Use:   "ocifeatureinstall",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "ocifeatureinstall <ociFeature>",
+	Short: "Installs a devcontainer feature from an OCI registry",
+	Long: `Installs a devcontainer feature from an OCI registry. 
+		e.g. dc-ccli ocifeatureinstall "ghcr.io/sebst/devcontainer-features/debug-dump-env:1"
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 1 {
 			fmt.Println("Usage: ccli ocifeatureinstall <ociFeature>")
