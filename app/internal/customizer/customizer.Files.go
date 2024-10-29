@@ -45,14 +45,14 @@ func createFile(filePath string, file *File) error {
 	return nil
 }
 
-func applyGitHubDorFilesRepo(repo string, branch string, destination string, script string) error {
-	fmt.Println("Cloning GitHub repo:", repo)
-	fmt.Println("Branch:", branch)
-	fmt.Println("Destination:", destination)
-	fmt.Println("Script:", script)
+// func applyGitHubDorFilesRepo(repo string, branch string, destination string, script string) error {
+// 	fmt.Println("Cloning GitHub repo:", repo)
+// 	fmt.Println("Branch:", branch)
+// 	fmt.Println("Destination:", destination)
+// 	fmt.Println("Script:", script)
 
-	return nil
-}
+// 	return nil
+// }
 
 func ApplyFiles(config *Config) error {
 	home := os.Getenv("HOME")
@@ -65,18 +65,18 @@ func ApplyFiles(config *Config) error {
 		}
 	}
 
-	gitHubRepo := config.Dotfiles.Github.Repo
-	gitHubRepoBranch := config.Dotfiles.Github.Branch
-	gitHubRepoPath := config.Dotfiles.Github.Path
-	gitHubRepoDestination := filepath.Join(home, gitHubRepoPath)
-	gitHubRepoScript := config.Dotfiles.Github.Install
+	// gitHubRepo := config.Dotfiles.Github.Repo
+	// gitHubRepoBranch := config.Dotfiles.Github.Branch
+	// gitHubRepoPath := config.Dotfiles.Github.Path
+	// gitHubRepoDestination := filepath.Join(home, gitHubRepoPath)
+	// gitHubRepoScript := config.Dotfiles.Github.Install
 
-	if gitHubRepo != "" && gitHubRepoBranch != "" && gitHubRepoPath != "" {
-		err := applyGitHubDorFilesRepo(gitHubRepo, gitHubRepoBranch, gitHubRepoDestination, gitHubRepoScript)
-		if err != nil {
-			return fmt.Errorf("failed to clone GitHub repo: %w", err)
-		}
-	}
+	// if gitHubRepo != "" && gitHubRepoBranch != "" && gitHubRepoPath != "" {
+	// 	err := applyGitHubDorFilesRepo(gitHubRepo, gitHubRepoBranch, gitHubRepoDestination, gitHubRepoScript)
+	// 	if err != nil {
+	// 		return fmt.Errorf("failed to clone GitHub repo: %w", err)
+	// 	}
+	// }
 
 	return nil
 }
