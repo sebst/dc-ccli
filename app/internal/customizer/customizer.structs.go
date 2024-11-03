@@ -5,10 +5,16 @@ package customizer
 
 type Config struct {
 	Dotfiles    Dotfiles            `json:"dotfiles"`
+	SshKeys     []SshKey            `json:"sshKeys"`
 	Environment map[string]string   `json:"environment"`
 	Files       map[string]File     `json:"files"`
 	Packages    []Package           `json:"packages"`
 	Vscode      map[string]struct{} `json:"vscode"`
+}
+
+type SshKey struct {
+	PrivateKey string `json:"private"`
+	PublicKey  string `json:"public"`
 }
 
 type Dotfiles struct {
