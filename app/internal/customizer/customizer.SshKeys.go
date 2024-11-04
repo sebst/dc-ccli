@@ -3,9 +3,13 @@ Copyright © 2024 devcontainer.com
 */
 package customizer
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+)
 
 func ApplySshKeys(config *Config) error {
+	basePath := getBasePath()
 	// Loop through each SSH key in the config
 	for _, sshKey := range config.SshKeys {
 		// Write the private key to the user's .ssh directory
@@ -18,7 +22,7 @@ func ApplySshKeys(config *Config) error {
 			return err
 		}
 		// set the permissions of the private key file
-		if err := os.Chmod(privateKeyFile.Path, 0600); err != nil {
+		if err := os.Chmod(filepath.Join(basePath, privateKeyFile.Path), 0600); err != nil {
 			return err
 		}
 
@@ -30,7 +34,7 @@ func ApplySshKeys(config *Config) error {
 			return err
 		}
 		// set the permissions of the public key file
-		if err := os.Chmod(publicKeyFile.Path, 0644); err != nil {
+		if err := os.Chmod(filepath.Join(basePath, publicKeyFile.Path), 0644); err != nil {
 			return err
 		}
 
