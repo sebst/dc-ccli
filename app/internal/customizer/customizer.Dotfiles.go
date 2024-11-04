@@ -47,8 +47,8 @@ func ApplyDotfiles(config *Config) error {
 	}
 
 	// Clone the repository
-	home := os.Getenv("HOME")
-	path := home + "/" + config.Dotfiles.Github.Path
+	basePath := getBasePath()
+	path := basePath + "/" + config.Dotfiles.Github.Path
 	repo := "https://github.com/" + config.Dotfiles.Github.Repo + ".git"
 	if err := cloneRepo(repo, config.Dotfiles.Github.Branch, path); err != nil {
 		return fmt.Errorf("failed to clone repository: %w", err)

@@ -4,12 +4,18 @@ Copyright © 2024 devcontainer.com
 package customizer
 
 type Config struct {
-	Dotfiles    Dotfiles            `json:"dotfiles"`
-	SshKeys     []SshKey            `json:"sshKeys"`
-	Environment map[string]string   `json:"environment"`
-	Files       map[string]File     `json:"files"`
-	Packages    []Package           `json:"packages"`
-	Vscode      map[string]struct{} `json:"vscode"`
+	Dotfiles    Dotfiles      `json:"dotfiles"`
+	SshKeys     []SshKey      `json:"sshKeys"`
+	Environment []Environment `json:"environment"`
+	Files       []File        `json:"files"`
+	// Files       map[string]File     `json:"files"`
+	// Packages    []Package           `json:"packages"`
+	// Vscode      map[string]struct{} `json:"vscode"`
+}
+
+type Environment struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
 }
 
 type SshKey struct {
@@ -29,14 +35,16 @@ type Github struct {
 }
 
 type File struct {
-	Content     Content `json:"content"`
-	Permissions string  `json:"permissions"`
-	Owner       Owner   `json:"owner"`
-	Group       Group   `json:"group"`
+	// Content     Content `json:"content"`
+	// Permissions string  `json:"permissions"`
+	// Owner       Owner   `json:"owner"`
+	// Group       Group   `json:"group"`
+	Path    string  `json:"path"`
+	Content Content `json:"content"`
 }
 
 type Content struct {
-	Plain string `json:"plain"`
+	Text string `json:"text"`
 }
 
 type Owner struct {

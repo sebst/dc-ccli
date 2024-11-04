@@ -42,25 +42,30 @@ func stringToFileMode(s string) (os.FileMode, error) {
 }
 
 func createFile(filePath string, file *File) error {
+	if filePath[0] != '/' {
+		basePath := getBasePath()
+		filePath = filepath.Join(basePath, filePath)
+	}
 	var fileContent []byte
-	if file.Content.Plain != "" {
-		fileContent = []byte(file.Content.Plain)
+	if file.Content.Text != "" {
+		fileContent = []byte(file.Content.Text)
 	}
-	fileMode, err := stringToFileMode(file.Permissions)
-	if err != nil {
-		return fmt.Errorf("failed to parse file mode: %w", err)
-	}
+	// fileMode, err := stringToFileMode(file.Permissions)
+	// if err != nil {
+	// 	return fmt.Errorf("failed to parse file mode: %w", err)
+	// }
 
 	// Write the file content to the specified path
+	fileMode := os.FileMode(0644)
 	if err := os.WriteFile(filePath, fileContent, fileMode); err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
 	// set the file owner and group
-	if file.Owner.UID != 0 || file.Group.GID != 0 {
-		if err := os.Chown(filePath, file.Owner.UID, file.Group.GID); err != nil {
-			return fmt.Errorf("failed to change file owner and group: %w", err)
-		}
-	}
+	// if file.Owner.UID != 0 || file.Group.GID != 0 {
+	// 	if err := os.Chown(filePath, file.Owner.UID, file.Group.GID); err != nil {
+	// 		return fmt.Errorf("failed to change file owner and group: %w", err)
+	// 	}
+	// }
 
 	return nil
 }
@@ -75,15 +80,23 @@ func createFile(filePath string, file *File) error {
 // }
 
 func ApplyFiles(config *Config) error {
-	home := os.Getenv("HOME")
+	// basePath := os.Getenv("HOME")
 
-	for filePath, file := range config.Files {
-		destination := filepath.Join(home, filePath)
+	for _, file := range config.Files {
+		destination := file.Path
 		err := createFile(destination, &file)
 		if err != nil {
 			return fmt.Errorf("failed to create file: %w", err)
 		}
 	}
+
+	// for file := range config.Files {
+	// 	destination := filepath.Join(basePath, filePath)
+	// 	err := createFile(destination, &file)
+	// 	if err != nil {
+	// 		return fmt.Errorf("failed to create file: %w", err)
+	// 	}
+	// }
 
 	// gitHubRepo := config.Dotfiles.Github.Repo
 	// gitHubRepoBranch := config.Dotfiles.Github.Branch

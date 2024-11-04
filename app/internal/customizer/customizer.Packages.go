@@ -35,11 +35,12 @@ func aptInstall(packages []string) error {
 }
 
 func ApplyPackages(config *Config) error {
-	aptPackages := []string{}
-	for _, pkg := range config.Packages {
-		if pkg.Manager == "apt" {
-			aptPackages = append(aptPackages, pkg.Name)
-		}
-	}
-	return aptInstall(aptPackages)
+	return nil
+	// aptPackages := []string{}
+	// for _, pkg := range config.Packages {
+	// 	if pkg.Manager == "apt" {
+	// 		aptPackages = append(aptPackages, pkg.Name)
+	// 	}
+	// }
+	// return aptInstall(aptPackages)
 }

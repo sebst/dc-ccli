@@ -10,9 +10,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// applyCmd represents the apply command
-var customizationApplyCmd = &cobra.Command{
-	Use:   "apply",
+// customizationParse represents the parse command
+var customizationParse = &cobra.Command{
+	Use:   "parse",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -21,7 +21,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("apply called")
+		fmt.Println("parse called")
 		if len(args) != 2 {
 			fmt.Println("please provide id and api key")
 			return
@@ -37,57 +37,19 @@ to quickly create a Cobra application.`,
 			return
 		}
 		fmt.Println("config:", config)
-
-		// err = customizer.ApplyFiles(config)
-		// if err != nil {
-		// 	fmt.Println("error:", err)
-		// 	return
-		// }
-
-		// err = customizer.ApplyPackages(config)
-		// if err != nil {
-		// 	fmt.Println("error:", err)
-		// 	return
-		// }
-
-		// Real Work Starts here
-		err = customizer.ApplyDotfiles(config)
-		if err != nil {
-			fmt.Println("error:", err)
-			return
-		}
-
-		err = customizer.ApplyFiles(config)
-		if err != nil {
-			fmt.Println("error:", err)
-			return
-		}
-
-		err = customizer.ApplySshKeys(config)
-		if err != nil {
-			fmt.Println("error:", err)
-			return
-		}
-
-		err = customizer.ApplyEnv(config)
-		if err != nil {
-			fmt.Println("error:", err)
-			return
-		}
-
 	},
 }
 
 func init() {
-	customizationCmd.AddCommand(customizationApplyCmd)
+	customizationCmd.AddCommand(customizationParse)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// applyCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// parseCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// applyCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// parseCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
