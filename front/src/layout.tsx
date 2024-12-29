@@ -8,10 +8,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SidebarProvider
     //   style={{ backgroundImage: `url(${background})`, width: "100%" }}
     >
-      <AppSidebar style={{ background: null }} />
+      <AppSidebar
+      // style={{ background: null }}
+      />
       <main>
         <SidebarTrigger />
-        {children}
+        <div> {children}</div>
       </main>
     </SidebarProvider>
   );
