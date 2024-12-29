@@ -3,6 +3,7 @@ module devcontainer.com/ccli
 go 1.22.6
 
 require (
+	github.com/coder/websocket v1.8.12
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/spf13/cobra v1.8.1
