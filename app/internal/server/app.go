@@ -7,7 +7,9 @@ import (
 	"bufio"
 	_ "embed"
 	"fmt"
+	"os"
 	"os/exec"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -36,6 +38,51 @@ func GetApp() *fiber.App {
 
 	app.Get("/hello", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
+	})
+
+	app.Get("/logs", func(c *fiber.Ctx) error {
+		// Open the log file for streaming
+		fileName := "/tmp/logfile"
+		file, err := os.Open(fileName)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).SendString("Failed to open " + fileName + ": " + err.Error())
+		}
+		// Do not defer file.Close() since we want to keep it open for streaming
+
+		// Set headers for a streaming response
+		c.Set("Content-Type", "text/plain")
+
+		// Set the BodyStreamWriter to continuously stream data
+		c.Context().SetBodyStreamWriter(func(w *bufio.Writer) {
+			reader := bufio.NewReader(file)
+
+			// Infinite loop to keep reading and sending new lines
+			for {
+				// Read one line from the file
+				line, _, err := reader.ReadLine()
+
+				if err != nil {
+					// If we encounter EOF, sleep a bit and continue to wait for new data
+					if err.Error() == "EOF" {
+						time.Sleep(500 * time.Millisecond)
+						continue
+					}
+
+					// If another error occurs (e.g., file read error), send the error and break out
+					w.WriteString("Error reading file: " + err.Error() + "\n")
+					w.Flush()
+					return
+				}
+
+				// Write the line to the stream
+				if len(line) > 0 {
+					w.WriteString(string(line) + "\n")
+					w.Flush() // Immediately flush the data to the client
+				}
+			}
+		})
+
+		return nil
 	})
 
 	app.Get("/api/processes", func(c *fiber.Ctx) error {
